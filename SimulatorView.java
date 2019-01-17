@@ -1,4 +1,3 @@
-package Parkeersimulator;
 
 import javax.swing.*;
 import java.awt.*;
