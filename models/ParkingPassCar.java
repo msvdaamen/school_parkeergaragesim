@@ -1,4 +1,4 @@
-package classes;
+package models;
 
 import java.util.Random;
 import java.awt.*;

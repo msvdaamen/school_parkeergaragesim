@@ -1,7 +1,7 @@
 package views;
 
-import classes.Car;
-import classes.Location;
+import models.Car;
+import models.Location;
 
 import javax.swing.*;
 import java.awt.*;
@@ -139,7 +139,7 @@ public class SimulatorView extends JFrame {
         }
         return true;
     }
-    
+
     private class CarParkView extends JPanel {
 
         private Dimension size;

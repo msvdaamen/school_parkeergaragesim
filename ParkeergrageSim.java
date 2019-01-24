@@ -1,4 +1,4 @@
-import models.Simulator;
+import controllers.Simulator;
 
 public class ParkeergrageSim {
 

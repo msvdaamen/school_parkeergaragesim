@@ -1,6 +1,6 @@
-package models;
+package controllers;
 
-import classes.*;
+import models.*;
 import views.SimulatorView;
 
 import java.util.Random;
@@ -59,7 +59,7 @@ public class Simulator {
     	handleEntrance();
     }
 
-    private void advanceTime(){
+    private void advanceTime() {
         // Advance the time by one minute.
         minute++;
         while (minute > 59) {
@@ -129,7 +129,7 @@ public class Simulator {
         }
     }
 
-    private void carsPaying(){
+    private void carsPaying() {
         // Let cars pay.
     	int i=0;
     	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
