@@ -1,3 +1,7 @@
+package views;
+
+import classes.Car;
+import classes.Location;
 
 import javax.swing.*;
 import java.awt.*;
@@ -137,24 +141,24 @@ public class SimulatorView extends JFrame {
     }
     
     private class CarParkView extends JPanel {
-        
+
         private Dimension size;
-        private Image carParkImage;    
-    
+        private Image carParkImage;
+
         /**
          * Constructor for objects of class CarPark
          */
         public CarParkView() {
             size = new Dimension(0, 0);
         }
-    
+
         /**
          * Overridden. Tell the GUI manager how big we would like to be.
          */
         public Dimension getPreferredSize() {
             return new Dimension(800, 500);
         }
-    
+
         /**
          * Overriden. The car park view component needs to be redisplayed. Copy the
          * internal image to screen.
@@ -163,7 +167,7 @@ public class SimulatorView extends JFrame {
             if (carParkImage == null) {
                 return;
             }
-    
+
             Dimension currentSize = getSize();
             if (size.equals(currentSize)) {
                 g.drawImage(carParkImage, 0, 0, null);
@@ -173,7 +177,7 @@ public class SimulatorView extends JFrame {
                 g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
             }
         }
-    
+
         public void updateView() {
             // Create a new car park image if the size has changed.
             if (!size.equals(getSize())) {
@@ -193,7 +197,7 @@ public class SimulatorView extends JFrame {
             }
             repaint();
         }
-    
+
         /**
          * Paint a place on this car park view in a given color.
          */

@@ -1,3 +1,4 @@
+package classes;
 
 import java.awt.*;
 
@@ -9,7 +10,7 @@ public abstract class Car {
     private boolean hasToPay;
 
     /**
-     * Constructor for objects of class Car
+     * Constructor for objects of class classes.Car
      */
     public Car() {
 

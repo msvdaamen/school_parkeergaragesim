@@ -1,3 +1,5 @@
+import models.Simulator;
+
 public class ParkeergrageSim {
 
     public static void main(String args[]) {

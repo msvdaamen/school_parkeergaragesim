@@ -1,3 +1,7 @@
+package models;
+
+import classes.*;
+import views.SimulatorView;
 
 import java.util.Random;
 
