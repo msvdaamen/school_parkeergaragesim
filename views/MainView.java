@@ -8,7 +8,7 @@ import java.awt.*;
 public class MainView extends JFrame {
 
     public MainView() throws HeadlessException {
-        SimulatorController simulatorController = new SimulatorController(2, 6, 30);
+        SimulatorController simulatorController = new SimulatorController();
 
         Container contentPane = getContentPane();
         contentPane.add(simulatorController.getCarParkView(), BorderLayout.CENTER);
