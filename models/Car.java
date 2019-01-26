@@ -8,12 +8,36 @@ public abstract class Car {
     private int minutesLeft;
     private boolean isPaying;
     private boolean hasToPay;
+    private static int enterSpeed = 3; // number of cars that can enter per minute
+    private static int paymentSpeed = 7; // number of cars that can pay per minute
+    private static int exitSpeed = 5; // number of cars that can leave per minute
+    private static int weekDayArrivals= 100; // average number of arriving cars per hour
+    private static int weekendArrivals = 200; // average number of arriving cars per hour
+    private static int weekDayPassArrivals= 50; // average number of arriving cars per hour
+    private static int weekendPassArrivals = 5; // average number of arriving cars per hour
+
 
     /**
      * Constructor for objects of class models.Car
      */
     public Car() {
 
+    }
+
+    public static int getWeekDayArrivals() {
+        return weekDayArrivals;
+    }
+
+    public static int getWeekendArrivals() {
+        return weekendArrivals;
+    }
+
+    public static int getWeekDayPassArrivals() {
+        return weekDayPassArrivals;
+    }
+
+    public static int getWeekendPassArrivals() {
+        return weekendPassArrivals;
     }
 
     public Location getLocation() {
@@ -53,4 +77,16 @@ public abstract class Car {
     }
     
     public abstract Color getColor();
+    public static int getEnterSpeed() {
+        return enterSpeed;
+    }
+
+    public static int getPaymentSpeed() {
+        return paymentSpeed;
+    }
+
+    public static int getExitSpeed() {
+        return exitSpeed;
+    }
+
 }
