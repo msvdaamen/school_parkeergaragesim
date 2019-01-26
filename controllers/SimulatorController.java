@@ -3,9 +3,6 @@ package controllers;
 import models.*;
 import views.CarParkView;
 
-import java.awt.*;
-import java.util.Random;
-
 public class SimulatorController extends AbstractController {
     private CarParkView carParkView;
     private SimulatorModel simulatorModel;
@@ -50,9 +47,5 @@ public class SimulatorController extends AbstractController {
 
     public int getNumberOfPlaces() {
         return this.simulatorModel.getNumberOfPlaces();
-    }
-
-    public Car[][][] getCars() {
-        return this.simulatorModel.getCars();
     }
 }
