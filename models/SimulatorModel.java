@@ -12,6 +12,13 @@ public class SimulatorModel {
     //Amount of VIP.
     private int numberOfVipRows;
     private int numberOfVipFloors;
+
+    //Antonie: these values are here to make sure that we dont get more than the
+    // maximum amount of pass cars at any one time.
+    private int maxPassCar;
+    private int numberPassCar;
+
+
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
@@ -30,6 +37,11 @@ public class SimulatorModel {
         this.numberOfVipRows = numberOfVipRows;
         this.numberOfVipFloors = numberOfVipFloors;
         this.numberOfOpenSpots = numberOfFloors * numberOfRows * numberOfPlaces;
+
+        //Antonie: Amount of Vip spaces = amount of PassCar
+        this.maxPassCar = numberOfVipFloors * numberOfVipRows * numberOfPlaces;
+        this.numberPassCar = 0;
+
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
     }
 
@@ -56,13 +68,19 @@ public class SimulatorModel {
             Location freeLocation;
             switch(type) {
                 case PASS:
-                    freeLocation = getFirstFreeVipLocation();
-                    break;
+                    //Antonie: Dont add another passCar if all the passCars are on the parking lot!
+                    if(numberPassCar < maxPassCar) {
+                        //A pass car has come to the parking lot
+                        numberPassCar++;
+                        freeLocation = getFirstFreeVipLocation();
+                        setCarAt(freeLocation, car);
+                    }
+                        break;
                 default:
                     freeLocation = getFirstFreeLocation();
+                    setCarAt(freeLocation, car);
                     break;
             }
-            setCarAt(freeLocation, car);
             i++;
         }
     }
@@ -92,6 +110,8 @@ public class SimulatorModel {
                 paymentCarQueue.addCar(car);
             }
             else {
+                //Antonie: one of the Pass cars has left, remove amount of Pass Car on parking lot
+                numberPassCar--;
                 carLeavesSpot(car);
             }
             car = getFirstLeavingCar();
@@ -115,7 +135,7 @@ public class SimulatorModel {
             case AD_HOC:
                 for (int i = 0; i < numberOfCars; i++) {
                     //Antonie: If waiting line is too long, keep driving.
-                    if(entranceCarQueue.carsInQueue() <= 80) {
+                    if(entranceCarQueue.carsInQueue() <= 30) {
                         entranceCarQueue.addCar(new AdHocCar());
                     }
                 }
@@ -123,7 +143,7 @@ public class SimulatorModel {
             case PASS:
                 for (int i = 0; i < numberOfCars; i++) {
                     //Antonie: Car with pass is more patient
-                    if(entrancePassQueue.carsInQueue()<=90) {
+                    if(entrancePassQueue.carsInQueue()<=40) {
                         entrancePassQueue.addCar(new ParkingPassCar());
                     }
                 }
@@ -281,5 +301,9 @@ public class SimulatorModel {
 
     public Car[][][] getCars() {
         return cars;
+    }
+
+    public CarQueue getEntranceCarQueue(){
+        return entranceCarQueue;
     }
 }
