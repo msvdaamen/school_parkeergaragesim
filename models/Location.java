@@ -1,10 +1,12 @@
 package models;
 
+
 public class Location {
 
     private int floor;
     private int row;
     private int place;
+
 
     /**
      * Constructor for objects of class models.Location
@@ -66,5 +68,4 @@ public class Location {
     public int getPlace() {
         return place;
     }
-
 }

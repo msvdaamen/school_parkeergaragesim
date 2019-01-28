@@ -9,6 +9,9 @@ public class SimulatorModel {
     private int numberOfRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
+    //Amount of VIP.
+    private int numberOfVipRows;
+    private int numberOfVipFloors;
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
@@ -16,7 +19,7 @@ public class SimulatorModel {
     private Car[][][] cars;
 
 
-    public SimulatorModel(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+    public SimulatorModel(int numberOfFloors, int numberOfRows, int numberOfPlaces, int numberOfVipRows, int numberOfVipFloors) {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
@@ -24,14 +27,16 @@ public class SimulatorModel {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
+        this.numberOfVipRows = numberOfVipRows;
+        this.numberOfVipFloors = numberOfVipFloors;
         this.numberOfOpenSpots = numberOfFloors * numberOfRows * numberOfPlaces;
         this.cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
     }
 
     public void handleEntrance(){
         carsArriving();
-        carsEntering(entrancePassQueue);
-        carsEntering(entranceCarQueue);
+        carsEntering(entrancePassQueue, PASS);
+        carsEntering(entranceCarQueue, AD_HOC);
     }
 
     public void handleExit(){
@@ -40,14 +45,23 @@ public class SimulatorModel {
         carsLeaving();
     }
 
-    private void carsEntering(CarQueue queue){
+    private void carsEntering(CarQueue queue, String type){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
         while (queue.carsInQueue()>0 &&
                 getNumberOfOpenSpots() > 0 &&
                 i<Car.getExitSpeed()) {
             Car car = queue.removeCar();
-            Location freeLocation = getFirstFreeLocation();
+            //Antonie: Cars with a pass will look for a VIP location
+            Location freeLocation;
+            switch(type) {
+                case PASS:
+                    freeLocation = getFirstFreeVipLocation();
+                    break;
+                default:
+                    freeLocation = getFirstFreeLocation();
+                    break;
+            }
             setCarAt(freeLocation, car);
             i++;
         }
@@ -100,12 +114,18 @@ public class SimulatorModel {
         switch(type) {
             case AD_HOC:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entranceCarQueue.addCar(new AdHocCar());
+                    //Antonie: If waiting line is too long, keep driving.
+                    if(entranceCarQueue.carsInQueue() <= 80) {
+                        entranceCarQueue.addCar(new AdHocCar());
+                    }
                 }
                 break;
             case PASS:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.addCar(new ParkingPassCar());
+                    //Antonie: Car with pass is more patient
+                    if(entrancePassQueue.carsInQueue()<=90) {
+                        entrancePassQueue.addCar(new ParkingPassCar());
+                    }
                 }
                 break;
         }
@@ -139,6 +159,17 @@ public class SimulatorModel {
         }
         return true;
     }
+
+    //Whether or not a spot is VIP
+    public boolean locationIsVip(Location location) {
+        int row = location.getRow();
+        int floor = location.getFloor();
+        if(row < numberOfVipRows && floor < numberOfVipFloors) {
+            return true;
+        }
+        return false;
+    }
+
 
     public Car getCarAt(Location location) {
         if (!locationIsValid(location)) {
@@ -180,7 +211,7 @@ public class SimulatorModel {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null) {
+                    if (getCarAt(location) == null && !locationIsVip(location)) {
                         return location;
                     }
                 }
@@ -188,6 +219,24 @@ public class SimulatorModel {
         }
         return null;
     }
+
+    //Antonie: Get first free Vip location
+    public Location getFirstFreeVipLocation() {
+        for (int floor = 0; floor < getNumberOfVipFloors(); floor++) {
+            for (int row = 0; row < getNumberOfVipRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    if (getCarAt(location) == null && locationIsVip(location)) {
+                        return location;
+                    }
+                }
+            }
+        }
+        //Cant find VIP location, so get a normal free location.
+        Location location = getFirstFreeLocation();
+        return location;
+    }
+    ///////////////////////////////////////////////////////////////////////////////
 
     public Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
@@ -220,6 +269,14 @@ public class SimulatorModel {
 
     public int getNumberOfOpenSpots() {
         return numberOfOpenSpots;
+    }
+
+    public int getNumberOfVipRows() {
+        return numberOfVipRows;
+    }
+
+    public int getNumberOfVipFloors() {
+        return numberOfVipFloors;
     }
 
     public Car[][][] getCars() {

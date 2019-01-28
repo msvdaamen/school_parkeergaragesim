@@ -54,7 +54,15 @@ public class CarParkView extends AbstractView {
                 for(int place = 0; place < this.controller.getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
                     Car car = this.controller.getCarAt(location);
-                    Color color = car == null ? Color.white : car.getColor();
+                    //Antonie: Vip spots have a different color.
+                    Color fieldColor;
+                    if(controller.locationIsVip(location)){
+                        fieldColor = Color.yellow;
+                    } else {
+                        fieldColor = Color.white;
+                    }
+                    Color color = car == null ? fieldColor : car.getColor();
+                    ///////////////////////////////////////////////////////
                     this.drawPlace(graphics, location, color);
                 }
             }

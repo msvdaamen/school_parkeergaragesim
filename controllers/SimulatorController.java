@@ -10,7 +10,7 @@ public class SimulatorController extends AbstractController {
     public SimulatorController() {
         addController(this);
         this.carParkView = new CarParkView(this);
-        this.simulatorModel = new SimulatorModel(2, 6, 30);
+        this.simulatorModel = new SimulatorModel(2, 6, 30, 2, 1);
 
     }
 
@@ -29,7 +29,7 @@ public class SimulatorController extends AbstractController {
 
 
     public Car getCarAt(Location location) {
-       return this.simulatorModel.getCarAt(location);
+        return this.simulatorModel.getCarAt(location);
     }
 
     @Override
@@ -48,4 +48,14 @@ public class SimulatorController extends AbstractController {
     public int getNumberOfPlaces() {
         return this.simulatorModel.getNumberOfPlaces();
     }
-}
+
+    //Antonie: Whether or not a spot is VIP
+    public boolean locationIsVip(Location location) {
+        int row = location.getRow();
+        int floor = location.getFloor();
+        if(row < simulatorModel.getNumberOfVipRows() && floor < simulatorModel.getNumberOfVipFloors()) {
+            return true;
+        }
+        return false;
+    }
+ }
