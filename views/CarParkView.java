@@ -4,6 +4,7 @@ import controllers.SimulatorController;
 import models.Car;
 import models.Location;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class CarParkView extends AbstractView {
@@ -11,6 +12,7 @@ public class CarParkView extends AbstractView {
     public Dimension size;
     private Image carParkImage;
     private SimulatorController controller;
+    public JButton button;
 
     /**
      * Constructor for objects of class CarPark
@@ -19,6 +21,8 @@ public class CarParkView extends AbstractView {
         addView(this);
         this.controller = controller;
         size = new Dimension(0, 0);
+        button = new JButton("Test button");
+        add(button);
     }
 
     /**
