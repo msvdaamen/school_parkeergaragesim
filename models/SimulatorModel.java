@@ -1,10 +1,13 @@
 package models;
 
 import java.util.Random;
+import java.awt.*;
+
 
 public class SimulatorModel {
     public static final String AD_HOC = "1";
     public static final String PASS = "2";
+    public static final String RES = "3";
     private int numberOfFloors;
     private int numberOfRows;
     private int numberOfPlaces;
@@ -21,6 +24,7 @@ public class SimulatorModel {
 
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
+    private CarQueue entranceResQueue;
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private Car[][][] cars;
@@ -29,6 +33,7 @@ public class SimulatorModel {
     public SimulatorModel(int numberOfFloors, int numberOfRows, int numberOfPlaces, int numberOfVipRows, int numberOfVipFloors) {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
+        entranceResQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         this.numberOfFloors = numberOfFloors;
@@ -49,6 +54,10 @@ public class SimulatorModel {
         carsArriving();
         carsEntering(entrancePassQueue, PASS);
         carsEntering(entranceCarQueue, AD_HOC);
+        carsEntering(entranceResQueue, RES);
+        //Antonie:
+        checkForReservation();
+        /////////
     }
 
     public void handleExit(){
@@ -76,6 +85,10 @@ public class SimulatorModel {
                         setCarAt(freeLocation, car);
                     }
                         break;
+                case RES:
+                    freeLocation = getFirstFreeLocation();
+                    setCarAt(freeLocation, car);
+                    break;
                 default:
                     freeLocation = getFirstFreeLocation();
                     setCarAt(freeLocation, car);
@@ -99,6 +112,8 @@ public class SimulatorModel {
         addArrivingCars(numberOfCars, AD_HOC);
         numberOfCars = getNumberOfCars(Car.getWeekDayPassArrivals(), Car.getWeekendPassArrivals());
         addArrivingCars(numberOfCars, PASS);
+        numberOfCars = getNumberOfCars(Car.getWeekDayReservation(), Car.getWeekendReservation());
+        addArrivingCars(numberOfCars, RES);
     }
 
     private void carsReadyToLeave(){
@@ -145,6 +160,14 @@ public class SimulatorModel {
                     //Antonie: Car with pass is more patient
                     if(entrancePassQueue.carsInQueue()<=40) {
                         entrancePassQueue.addCar(new ParkingPassCar());
+                    }
+                }
+                break;
+            case RES:
+                for (int i = 0; i < numberOfCars; i++) {
+                    //Antonie: Car with pass is more patient
+                    if(entranceResQueue.carsInQueue()<=40) {
+                        entranceResQueue.addCar(new ResCar());
                     }
                 }
                 break;
@@ -271,6 +294,21 @@ public class SimulatorModel {
             }
         }
         return null;
+    }
+
+    //Antonie: Looks for reservation who need to become a car.
+    public void checkForReservation() {
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    Car car = getCarAt(location);
+                    if (car != null && car.getColor() == Color.gray && (car.getStayMinutes() - car.getResMinutes()) > car.getMinutesLeft()) {
+                        car.changeColor();
+                    }
+                }
+            }
+        }
     }
 
 

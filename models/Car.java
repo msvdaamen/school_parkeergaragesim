@@ -11,10 +11,12 @@ public abstract class Car {
     private static int enterSpeed = 3; // number of cars that can enter per minute
     private static int paymentSpeed = 7; // number of cars that can pay per minute
     private static int exitSpeed = 5; // number of cars that can leave per minute
-    private static int weekDayArrivals= 100; // average number of arriving cars per hour
-    private static int weekendArrivals = 200; // average number of arriving cars per hour
-    private static int weekDayPassArrivals= 50; // average number of arriving cars per hour
-    private static int weekendPassArrivals = 5; // average number of arriving cars per hour
+    private static int weekDayArrivals= 70; // average number of arriving cars per hour
+    private static int weekendArrivals = 120; // average number of arriving cars per hour
+    private static int weekDayReservation = 30; // average number of reservations cars per hour
+    private static int weekendReservation = 80;
+    private static int weekDayPassArrivals= 25; // average number of arriving cars per hour
+    private static int weekendPassArrivals = 15; // average number of arriving cars per hour
 
 
     /**
@@ -38,6 +40,14 @@ public abstract class Car {
 
     public static int getWeekendPassArrivals() {
         return weekendPassArrivals;
+    }
+
+    public static int getWeekDayReservation() {
+        return weekDayReservation;
+    }
+
+    public static int getWeekendReservation() {
+        return weekendReservation;
     }
 
     public Location getLocation() {
@@ -88,5 +98,12 @@ public abstract class Car {
     public static int getExitSpeed() {
         return exitSpeed;
     }
+    //Antonie: DONT use theses for any other car than ResCar unless you want to get an error.
+    public void changeColor(){};
+
+    public int getResMinutes(){ return getResMinutes();}
+
+    public int getStayMinutes() {return getStayMinutes();}
+
 
 }
