@@ -21,6 +21,8 @@ public class SimulatorModel {
     private int maxPassCar;
     private int numberPassCar;
 
+    //Antonie: loadsa money
+    private int amountPaymentMoney;
 
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
@@ -138,7 +140,12 @@ public class SimulatorModel {
         int i=0;
         while (paymentCarQueue.carsInQueue()>0 && i < Car.getPaymentSpeed()){
             Car car = paymentCarQueue.removeCar();
-            // TODO Handle payment.
+            //Antonie: Reservations cost more money than normal parking.
+            if((car.getColor() == Color.green) || (car.getColor() == Color.gray)){
+                amountPaymentMoney += 10;
+            } else {
+                amountPaymentMoney += 3;
+            }
             carLeavesSpot(car);
             i++;
         }
