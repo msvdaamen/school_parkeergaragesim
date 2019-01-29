@@ -7,6 +7,8 @@ import java.awt.*;
 
 public class MainView extends JFrame {
 
+
+
     public MainView() throws HeadlessException {
         SimulatorController simulatorController = new SimulatorController();
 
@@ -18,4 +20,6 @@ public class MainView extends JFrame {
 
         simulatorController.updateView();
     }
+
+
 }

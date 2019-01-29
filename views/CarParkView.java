@@ -6,6 +6,7 @@ import models.Location;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class CarParkView extends AbstractView {
 
@@ -30,6 +31,12 @@ public class CarParkView extends AbstractView {
      */
     public Dimension getPreferredSize() {
         return new Dimension(800, 500);
+    }
+
+    public void stopButton(){
+        JButton s = new JButton("stop");
+        s.setBounds(10, 10, 20, 20);
+
     }
 
     public void tick() {
