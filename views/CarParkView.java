@@ -13,7 +13,7 @@ public class CarParkView extends AbstractView {
     public Dimension size;
     private Image carParkImage;
     private SimulatorController controller;
-    public JButton button;
+    public JButton stopButton;
 
     /**
      * Constructor for objects of class CarPark
@@ -21,22 +21,18 @@ public class CarParkView extends AbstractView {
     public CarParkView(SimulatorController controller) {
         addView(this);
         this.controller = controller;
+        setLayout(null);
         size = new Dimension(0, 0);
-        button = new JButton("Test button");
-        add(button);
+        stopButton = new JButton("Stop button");
+        stopButton.setBounds(50, 400, 100, 20);
+        add(stopButton);
     }
 
-    /**
-     * Overridden. Tell the GUI manager how big we would like to be.
+    /**     * Overridden. Tell the GUI manager how big we would like to be.
+
      */
     public Dimension getPreferredSize() {
-        return new Dimension(800, 500);
-    }
-
-    public void stopButton(){
-        JButton s = new JButton("stop");
-        s.setBounds(10, 10, 20, 20);
-
+        return new Dimension(1000, 1000);
     }
 
     public void tick() {
