@@ -1,19 +1,39 @@
 import controllers.AbstractController;
+import controllers.SimulatorController;
 import models.*;
 import views.AbstractView;
+
+import views.CarParkView;
 import views.MainView;
 
 public class ParkeergrageSim {
 
+
+private boolean running;
+    private MainView mainView;
     private int tickPause = 100;
 
+
+
+
+
+
     public void run() {
-        for (int i = 0; i < 10000; i++) {
-            tick();
+        System.out.println(running);
+
+         {
+            for (int i = 0; i < 10000; i++) {
+                tick();
+
+            }
         }
+
+
     }
 
     private void tick() {
+
+
         Time.advanceTime();
         tickController();
 //        handleExit();
@@ -52,5 +72,21 @@ public class ParkeergrageSim {
         ParkeergrageSim parkeergrageSim = new ParkeergrageSim();
         MainView mainView = new MainView();
         parkeergrageSim.run();
+        parkeergrageSim.setRunning(mainView.getRunning());
+
     }
+
+    public void setRunning(boolean b){
+        running = b;
+    }
+
+
+
+
+
+
+
+
+
+
 }

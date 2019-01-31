@@ -1,21 +1,33 @@
 package controllers;
 
+
 import models.*;
 import views.CarParkView;
 
+
 public class SimulatorController extends AbstractController {
-    private CarParkView carParkView;
+    public CarParkView carParkView;
     private SimulatorModel simulatorModel;
+    private boolean running = true;
+
+
+
+
+
 
     public SimulatorController() {
         addController(this);
         this.carParkView = new CarParkView(this);
         this.simulatorModel = new SimulatorModel(2, 6, 30, 2, 1);
 
+
+
     }
 
     public CarParkView getCarParkView() {
         return this.carParkView;
+
+
     }
 
     public void updateView() {
@@ -24,7 +36,9 @@ public class SimulatorController extends AbstractController {
 
     @Override
     public void tick() {
-        this.simulatorModel.handleExit();
+
+            this.simulatorModel.handleExit();
+
     }
 
 
@@ -58,4 +72,18 @@ public class SimulatorController extends AbstractController {
         }
         return false;
     }
+
+    public void setRunning(boolean b){
+        running = b;
+    }
+
+    public boolean getRunning(){
+        return running;
+    }
+
+
+
+
+
+
  }
