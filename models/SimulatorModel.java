@@ -8,6 +8,7 @@ public class SimulatorModel {
     public static final String AD_HOC = "1";
     public static final String PASS = "2";
     public static final String RES = "3";
+    private int currentDay = 0;
     private int numberOfFloors;
     private int numberOfRows;
     private int numberOfPlaces;
@@ -22,9 +23,11 @@ public class SimulatorModel {
     private int numberPassCar;
 
     //Antonie: loadsa money
-    private int amountPaymentMoney;
+    private int revenueWeek[];
 
     private CarQueue entranceCarQueue;
+
+
     private CarQueue entrancePassQueue;
     private CarQueue entranceResQueue;
     private CarQueue paymentCarQueue;
@@ -38,6 +41,7 @@ public class SimulatorModel {
         entranceResQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
+        this.revenueWeek = new int[7];
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
@@ -140,11 +144,16 @@ public class SimulatorModel {
         int i=0;
         while (paymentCarQueue.carsInQueue()>0 && i < Car.getPaymentSpeed()){
             Car car = paymentCarQueue.removeCar();
+            if(currentDay != Time.getDay() ) {
+                revenueWeek[Time.getDay()] = 0;
+                currentDay = Time.getDay();
+
+            }
             //Antonie: Reservations cost more money than normal parking.
             if((car.getColor() == Color.green) || (car.getColor() == Color.gray)){
-                amountPaymentMoney += 10;
+                revenueWeek[Time.getDay()] += car.getTotalMinuts() * 0.0045f + 10;
             } else {
-                amountPaymentMoney += 3;
+                revenueWeek[Time.getDay()] += car.getTotalMinuts() * 0.0045f;
             }
             carLeavesSpot(car);
             i++;
@@ -201,11 +210,13 @@ public class SimulatorModel {
     }
 
     private boolean locationIsValid(Location location) {
-        int floor = location.getFloor();
-        int row = location.getRow();
-        int place = location.getPlace();
-        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
-            return false;
+        if(location != null) {
+            int floor = location.getFloor();
+            int row = location.getRow();
+            int place = location.getPlace();
+            if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
+                return false;
+            }
         }
         return true;
     }
@@ -222,6 +233,9 @@ public class SimulatorModel {
 
 
     public Car getCarAt(Location location) {
+        if(location == null) {
+            return null;
+        }
         if (!locationIsValid(location)) {
             return null;
         }
@@ -350,5 +364,22 @@ public class SimulatorModel {
 
     public CarQueue getEntranceCarQueue(){
         return entranceCarQueue;
+    }
+
+
+    public CarQueue getEntrancePassQueue() {
+        return entrancePassQueue;
+    }
+
+    public CarQueue getEntranceResQueue() {
+        return entranceResQueue;
+    }
+
+    public CarQueue getExitCarQueue() {
+        return exitCarQueue;
+    }
+
+    public int[] getRevenueWeek() {
+        return this.revenueWeek;
     }
 }

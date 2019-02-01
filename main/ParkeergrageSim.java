@@ -1,3 +1,5 @@
+package main;
+
 import controllers.AbstractController;
 import models.*;
 import views.AbstractView;
@@ -5,11 +7,15 @@ import views.MainView;
 
 public class ParkeergrageSim {
 
-    private int tickPause = 100;
+    private static int speed = 1;
+    private static boolean start = true;
 
     public void run() {
-        for (int i = 0; i < 10000; i++) {
-            tick();
+        while(true) {
+            if(start) {
+                tick();
+            }
+            System.out.println();
         }
     }
 
@@ -20,7 +26,7 @@ public class ParkeergrageSim {
         updateViews();
         // Pause.
         try {
-            Thread.sleep(tickPause);
+            Thread.sleep(100 / speed);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -47,6 +53,21 @@ public class ParkeergrageSim {
         }
     }
 
+    public static void start() {
+        start = true;
+    }
+
+    public static void stop() {
+        start = false;
+    }
+
+    public static boolean isRunning() {
+        return start;
+    }
+
+    public static void setSpeed(int speeds) {
+        speed = speeds;
+    }
 
     public static void main(String args[]) {
         ParkeergrageSim parkeergrageSim = new ParkeergrageSim();

@@ -6,6 +6,7 @@ public abstract class Car {
 
     private Location location;
     private int minutesLeft;
+    private int totalMinuts;
     private boolean isPaying;
     private boolean hasToPay;
     private static int enterSpeed = 3; // number of cars that can enter per minute
@@ -64,6 +65,7 @@ public abstract class Car {
 
     public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;
+        this.totalMinuts = minutesLeft;
     }
     
     public boolean getIsPaying() {
@@ -100,6 +102,10 @@ public abstract class Car {
     }
     //Antonie: DONT use theses for any other car than ResCar unless you want to get an error.
     public void changeColor(){};
+
+    public int getTotalMinuts() {
+        return this.totalMinuts;
+    }
 
     public int getResMinutes(){ return getResMinutes();}
 

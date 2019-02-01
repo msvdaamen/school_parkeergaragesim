@@ -7,10 +7,10 @@ public class SimulatorController extends AbstractController {
     private CarParkView carParkView;
     private SimulatorModel simulatorModel;
 
-    public SimulatorController() {
+    public SimulatorController(SimulatorModel simulatorModel) {
         addController(this);
         this.carParkView = new CarParkView(this);
-        this.simulatorModel = new SimulatorModel(2, 6, 30, 2, 1);
+        this.simulatorModel = simulatorModel;
 
     }
 
